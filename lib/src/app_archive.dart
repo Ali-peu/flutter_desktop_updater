@@ -52,6 +52,12 @@ class ItemModel {
       mandatory: json["mandatory"],
       url: json["url"],
       platform: json["platform"],
+      changedFiles: json["changedFiles"] != null
+          ? List<FileHashModel?>.from(
+              // ignore: avoid_dynamic_calls
+              json["changedFiles"].map((x) => FileHashModel.fromJson(x)),
+            )
+          : null,
     );
   }
   final String version;
@@ -118,20 +124,18 @@ class ChangeModel {
 class FileHashModel {
   FileHashModel({
     required this.filePath,
-    required this.calculatedHash,
-    required this.length,
+     this.calculatedHash,
+     this.length,
   });
 
   factory FileHashModel.fromJson(Map<String, dynamic> json) {
     return FileHashModel(
       filePath: json["path"],
-      calculatedHash: json["calculatedHash"],
-      length: json["length"],
     );
   }
   final String filePath;
-  final String calculatedHash;
-  final int length;
+  final String? calculatedHash;
+  final int? length;
 
   Map<String, dynamic> toJson() {
     return {
